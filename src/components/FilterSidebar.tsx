@@ -5,6 +5,9 @@ interface FilterSidebarProps {
     priceRange: [number, number];
     yearRange: [number, number];
     mileageRange: [number, number];
+    makes?: string[];
+    transmissions?: string[];
+    status?: string;
   };
   setFilters: (filters: any) => void;
   vehicleType: string;

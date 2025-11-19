@@ -3,7 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import vehicleRoutes from './routes/vehicles';
-import authRoutes = require('./routes/auth');
+import authRoutes from './routes/auth';
 
 
 dotenv.config();

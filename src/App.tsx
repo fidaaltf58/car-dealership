@@ -7,8 +7,9 @@ import { Vehicle } from './types/Vehicle';
 import Header from './components/Header';
 import VehicleCard from './components/VehicleCard';
 import FilterSidebar from './components/FilterSidebar';
+import ImageGallery from './components/ImageGallery';
 
-// VOS 2 VÉHICULES RÉELS - Comme sur 1US Motors
+// 3 VÉHICULES RÉELS - 2 À VENDRE, 1 À LOUER
 const realVehicles: Vehicle[] = [
   {
     _id: 'acura-001545',
@@ -36,8 +37,15 @@ const realVehicles: Vehicle[] = [
       'Premium Audio',
       'LED Headlights'
     ],
-    images: [],
-    status: 'available',
+    images: [
+      '/images/vehicles/2/1.jpeg',
+      '/images/vehicles/2/2.jpeg',
+      '/images/vehicles/2/3.jpeg',
+      '/images/vehicles/2/4.jpeg',
+      '/images/vehicles/2/8.jpeg',
+      '/images/vehicles/2/WhatsApp Image 2025-11-20 at 12.04.14.jpeg'
+    ],
+    status: 'for-rent',
     createdAt: '2024-01-15',
     updatedAt: '2024-01-15'
   },
@@ -67,8 +75,60 @@ const realVehicles: Vehicle[] = [
       'Power Liftgate',
       'All-Wheel Drive'
     ],
-    images: [],
-    status: 'available',
+    images: [
+      '/images/vehicles/4/1.jpeg',
+      '/images/vehicles/4/2.jpeg',
+      '/images/vehicles/4/3.jpeg',
+      '/images/vehicles/4/4.jpeg',
+      '/images/vehicles/4/5.jpeg',
+      '/images/vehicles/4/6.jpeg',
+      '/images/vehicles/4/7.jpeg',
+
+    ],
+    status: 'for-rent',
+    createdAt: '2024-01-15',
+    updatedAt: '2024-01-15'
+  },
+  {
+    _id: 'bmw-003002',
+    make: 'BMW',
+    model: 'X3',
+    year: 2023,
+    price: 599, // Prix de location par mois
+    mileage: 8900,
+    color: 'White',
+    interior: 'Premium Leather',
+    transmission: '8-Speed Automatic',
+    engine: '2.0L Turbo I4',
+    stockNumber: '003002',
+    vin: '5UXTR6C07PUL12345',
+    features: [
+      'M Sport Package',
+      'Panoramic Sunroof',
+      'Premium Package',
+      'Heated Seats',
+      'Navigation System',
+      'Head-Up Display',
+      'Parking Assistant',
+      'Harmon Kardon Audio',
+      'Wireless Charging',
+      'Apple CarPlay'
+    ],
+    images: [
+      '/images/vehicles/SMART/2.jpeg',
+      '/images/vehicles/SMART/3.jpeg',
+      '/images/vehicles/SMART/4.jpeg',
+      '/images/vehicles/SMART/5.jpeg',
+      '/images/vehicles/SMART/6.jpeg',
+      '/images/vehicles/SMART/7.jpeg',
+      '/images/vehicles/SMART/8.jpeg',
+      '/images/vehicles/SMART/9.jpeg',
+      '/images/vehicles/SMART/10.jpeg',
+      '/images/vehicles/SMART/11.jpeg',
+      '/images/vehicles/SMART/12.jpeg',
+      'public/images/vehicles/SMART/WhatsApp Image 2025-11-19 at 18.48.23.jpeg',
+    ],
+    status: 'for-rent',
     createdAt: '2024-01-15',
     updatedAt: '2024-01-15'
   }
@@ -95,7 +155,6 @@ function HomePage() {
   const [featuredVehicles, setFeaturedVehicles] = useState<Vehicle[]>([]);
 
   useEffect(() => {
-    // Utilisez vos 2 véhicules réels
     setFeaturedVehicles(realVehicles);
   }, []);
 
@@ -105,7 +164,7 @@ function HomePage() {
       <section className="hero-section">
         <div className="hero-content">
           <h1>Find Your Perfect Vehicle</h1>
-          <p>Best deals on quality cars, trucks, and SUVs</p>
+          <p>Best deals on quality cars for sale and rent</p>
           <div className="hero-buttons">
             <button className="btn-primary" onClick={() => window.location.href = '/inventory'}>
               Browse Inventory
@@ -117,7 +176,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Featured Vehicles - VOS 2 VÉHICULES */}
+      {/* Featured Vehicles */}
       <section className="featured-section">
         <div className="container">
           <h2>Featured Vehicles</h2>
@@ -143,16 +202,16 @@ function HomePage() {
           <h2>Our Services</h2>
           <div className="services-grid">
             <div className="service-card">
-              <h3>Inventory Financing</h3>
-              <p>Flexible financing options for all credit types</p>
+              <h3>Vehicle Sales</h3>
+              <p>Quality pre-owned vehicles with comprehensive warranties</p>
             </div>
             <div className="service-card">
-              <h3>Service Center</h3>
-              <p>Professional maintenance and repair services</p>
+              <h3>Car Rental</h3>
+              <p>Flexible rental options for short and long term</p>
             </div>
             <div className="service-card">
-              <h3>Make Appointment</h3>
-              <p>Schedule your test drive or service appointment</p>
+              <h3>Financing</h3>
+              <p>Competitive financing rates for all credit types</p>
             </div>
           </div>
         </div>
@@ -166,18 +225,22 @@ function InventoryPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('make');
+  const [statusFilter, setStatusFilter] = useState('all');
 
   useEffect(() => {
-    // Utilisez vos 2 véhicules réels
     setVehicles(realVehicles);
   }, []);
 
   const filteredVehicles = vehicles
-    .filter(vehicle => 
-      vehicle.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      vehicle.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      vehicle.year.toString().includes(searchTerm)
-    )
+    .filter(vehicle => {
+      const matchesSearch = vehicle.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vehicle.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vehicle.year.toString().includes(searchTerm);
+      
+      const matchesStatus = statusFilter === 'all' || vehicle.status === statusFilter;
+      
+      return matchesSearch && matchesStatus;
+    })
     .sort((a, b) => {
       switch (sortBy) {
         case 'price-low': return a.price - b.price;
@@ -187,71 +250,91 @@ function InventoryPage() {
         default: return a.make.localeCompare(b.make);
       }
     });
-
-  return (
-    <div className="inventory-page">
-      <div className="container">
-        <div className="inventory-header">
-          <h1>Our Vehicle Inventory</h1>
-          <p>Find your perfect vehicle from our selection</p>
-        </div>
-
-        {/* Search and Filter Bar */}
-        <div className="search-filter-bar">
-          <div className="search-box">
-            <input
-              type="text"
-              placeholder="Search by make, model, or year..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+    return (
+      <div className="inventory-page">
+        <div className="container">
+          <div className="inventory-header">
+            <h1>Our Vehicle Inventory</h1>
+            <p>Find your perfect vehicle from our selection</p>
           </div>
-          <div className="sort-filter">
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="make">Sort: A to Z</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="year-new">Year: Newest First</option>
-              <option value="year-old">Year: Oldest First</option>
-            </select>
+  
+          {/* Search and Filter Bar */}
+          <div className="search-filter-bar">
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="Search by make, model, or year..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="status-filter">
+              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                <option value="all">All Vehicles</option>
+                <option value="for-sale">For Sale</option>
+                <option value="for-rent">For Rent</option>
+              </select>
+            </div>
+            <div className="sort-filter">
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                <option value="make">Sort: A to Z</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="year-new">Year: Newest First</option>
+                <option value="year-old">Year: Oldest First</option>
+              </select>
+            </div>
           </div>
-        </div>
-
-        {/* Inventory Stats */}
-        <div className="inventory-stats">
-          <span>{filteredVehicles.length} vehicles found</span>
-          <span className="real-data-note">✓ Real Inventory Data</span>
-        </div>
-
-        {/* Vehicles Grid - VOS 2 VÉHICULES */}
-        <div className="vehicles-grid">
-          {filteredVehicles.map(vehicle => (
-            <VehicleCard key={vehicle._id} vehicle={vehicle} />
-          ))}
+  
+          {/* Inventory Stats */}
+          <div className="inventory-stats">
+            <span>{filteredVehicles.length} vehicles found</span>
+            <span className="real-data-note">✓ Real Inventory Data</span>
+          </div>
+  
+          {/* Vehicles Grid */}
+          <div className="vehicles-grid">
+            {filteredVehicles.map(vehicle => (
+              <VehicleCard key={vehicle._id} vehicle={vehicle} />
+            ))}
+          </div>
+  
+          {filteredVehicles.length === 0 && (
+            <div className="no-vehicles">
+              <h3>No vehicles match your search criteria</h3>
+              <p>Try adjusting your filters or search terms</p>
+            </div>
+          )}
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
+// PAGE VOITURES
 // PAGE VOITURES
 function CarsPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [filteredVehicles, setFilteredVehicles] = useState<Vehicle[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('make');
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<{
+    priceRange: [number, number];
+    yearRange: [number, number];
+    mileageRange: [number, number];
+    makes: string[];
+    transmissions: string[];
+    status: string;
+  }>({
     priceRange: [0, 100000],
     yearRange: [2010, 2024],
-    mileageRange: [0, 100000]
+    mileageRange: [0, 100000],
+    makes: [],
+    transmissions: [],
+    status: 'all'
   });
 
   useEffect(() => {
-    // Filtrer seulement les voitures (Cars)
-    const cars = realVehicles.filter(vehicle => 
-      vehicle.make.toLowerCase().includes('acura') || 
-      vehicle.make.toLowerCase().includes('honda')
-    );
+    const cars = realVehicles;
     setVehicles(cars);
     setFilteredVehicles(cars);
   }, []);
@@ -270,7 +353,8 @@ function CarsPage() {
       vehicle.year >= filters.yearRange[0] && 
       vehicle.year <= filters.yearRange[1] &&
       vehicle.mileage >= filters.mileageRange[0] && 
-      vehicle.mileage <= filters.mileageRange[1]
+      vehicle.mileage <= filters.mileageRange[1] &&
+      (filters.status === 'all' || vehicle.status === filters.status)
     );
 
     // Trier
@@ -649,11 +733,11 @@ function AppointmentPage() {
             <div className="contact-details">
               <div className="contact-item">
                 <strong>Address:</strong>
-                <p>2210 Pulaski Hwy<br />Edgewood, MD 21040</p>
+                <p>1520 SW 22nd Ave, Miami, Florida.<br />United States 33145</p>
               </div>
               <div className="contact-item">
                 <strong>Phone:</strong>
-                <p>410-844-5868</p>
+                <p>+1 (510) 631-3167</p>
               </div>
               <div className="contact-item">
                 <strong>Hours:</strong>
@@ -683,9 +767,9 @@ function AppointmentPage() {
 
 // PAGE DÉTAILS VÉHICULE
 function VehicleDetailsPage() {
-  // Trouver le véhicule basé sur l'ID dans l'URL
   const vehicleId = window.location.pathname.split('/').pop();
   const vehicle = realVehicles.find(v => v._id === vehicleId);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   if (!vehicle) {
     return (
@@ -703,32 +787,126 @@ function VehicleDetailsPage() {
     );
   }
 
+  const nextImage = () => {
+    setSelectedImageIndex((prev) => 
+      prev === vehicle.images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prev) => 
+      prev === 0 ? vehicle.images.length - 1 : prev - 1
+    );
+  };
+
+  const selectImage = (index: number) => {
+    setSelectedImageIndex(index);
+  };
+
   return (
     <div className="vehicle-details-page">
       <div className="container">
         <div className="vehicle-details">
           {/* Image Gallery */}
           <div className="image-gallery">
-            <div className="main-image">
-              <div className="no-image-large">
-                <div className="no-image-text">
-                  <h3>{vehicle.year} {vehicle.make} {vehicle.model}</h3>
-                  <p>Image coming soon</p>
-                </div>
+            <div className="main-image-container">
+              <div className="main-image">
+                {vehicle.images && vehicle.images.length > 0 ? (
+                  <>
+                    <img 
+                      src={vehicle.images[selectedImageIndex]} 
+                      alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                    <div className="no-image-large hidden">
+                      <div className="no-image-text">
+                        <h3>{vehicle.year} {vehicle.make} {vehicle.model}</h3>
+                        <p>Image not available</p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="no-image-large">
+                    <div className="no-image-text">
+                      <h3>{vehicle.year} {vehicle.make} {vehicle.model}</h3>
+                      <p>No images available</p>
+                    </div>
+                  </div>
+                )}
               </div>
+              
+              {/* Navigation Arrows */}
+              {vehicle.images && vehicle.images.length > 1 && (
+                <>
+                  <button className="gallery-arrow gallery-arrow-prev" onClick={prevImage}>
+                    ‹
+                  </button>
+                  <button className="gallery-arrow gallery-arrow-next" onClick={nextImage}>
+                    ›
+                  </button>
+                </>
+              )}
+              
+              {/* Image Counter */}
+              {vehicle.images && vehicle.images.length > 1 && (
+                <div className="image-counter">
+                  {selectedImageIndex + 1} / {vehicle.images.length}
+                </div>
+              )}
             </div>
+
+            {/* Thumbnail Gallery */}
+            {vehicle.images && vehicle.images.length > 1 && (
+              <div className="thumbnail-gallery">
+                {vehicle.images.map((image, index) => (
+                  <div 
+                    key={index}
+                    className={`thumbnail ${index === selectedImageIndex ? 'active' : ''}`}
+                    onClick={() => selectImage(index)}
+                  >
+                    <img 
+                      src={image} 
+                      alt={`${vehicle.year} ${vehicle.make} ${vehicle.model} - View ${index + 1}`}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Vehicle Info */}
           <div className="vehicle-info">
-            <h1>{vehicle.year} {vehicle.make} {vehicle.model}</h1>
+            <div className="vehicle-header">
+              <h1>{vehicle.year} {vehicle.make} {vehicle.model}</h1>
+              <div className="vehicle-status-badge">
+                {vehicle.status === 'for-sale' ? (
+                  <span className="sale-badge-large">For Sale</span>
+                ) : (
+                  <span className="rent-badge-large">For Rent</span>
+                )}
+              </div>
+            </div>
+            
             <div className="stock-vin">
               <span><strong>Stock #:</strong> {vehicle.stockNumber}</span>
               <span><strong>VIN:</strong> {vehicle.vin}</span>
             </div>
 
             <div className="pricing-section">
-              {vehicle.salePrice && vehicle.salePrice < vehicle.price ? (
+              {vehicle.status === 'for-rent' ? (
+                <div className="rental-pricing">
+                  <div className="price">${vehicle.price.toLocaleString()}<span className="rental-label">/month</span></div>
+                  <div className="rental-note">Rental price per month</div>
+                </div>
+              ) : vehicle.salePrice && vehicle.salePrice < vehicle.price ? (
                 <>
                   <div className="price-comparison">
                     <span className="original-price">${vehicle.price.toLocaleString()}</span>
