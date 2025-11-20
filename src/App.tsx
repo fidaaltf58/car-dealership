@@ -7,7 +7,6 @@ import { Vehicle } from './types/Vehicle';
 import Header from './components/Header';
 import VehicleCard from './components/VehicleCard';
 import FilterSidebar from './components/FilterSidebar';
-import ImageGallery from './components/ImageGallery';
 
 // 3 VÉHICULES RÉELS - 2 À VENDRE, 1 À LOUER
 const realVehicles: Vehicle[] = [

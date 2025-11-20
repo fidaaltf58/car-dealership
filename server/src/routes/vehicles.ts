@@ -21,10 +21,10 @@ router.post('/', auth, upload.array('images', 10), async (req, res) => {
     console.log("BODY:", req.body);
     console.log("FILES:", req.files);
 
-    const images = req.files ? (req.files as Express.Multer.File[]).map(f => f.filename) : [];
+    const images = req.files ? (req.files as Express.Multer.File[]).map((f: Express.Multer.File) => f.filename) : [];
 
     const features = req.body.features
-      ? req.body.features.split(',').map(f => f.trim()).filter(Boolean)
+      ? req.body.features.split(',').map((f: string) => f.trim()).filter(Boolean)
       : [];
 
     const vehicle = await Vehicle.create({

@@ -30,7 +30,9 @@ const VehicleForm: React.FC<Props> = ({ vehicle, onSubmit, onCancel }) => {
     e.preventDefault();
 
     const data = new FormData();
-    Object.entries(form).forEach(([key, value]) => data.append(key, value));
+    Object.entries(form).forEach(([key, value]) => {
+      data.append(key, String(value));
+    });
 
     if (images) {
       for (let i = 0; i < images.length; i++) {

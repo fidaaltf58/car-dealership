@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../utils/api';
 
 const Login: React.FC = () => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Login: React.FC = () => {
       localStorage.setItem('token', response.data.token);
       navigate('/admin');
     } catch (error) {
-      setError('Invalid username or password');
+      setError('Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -39,12 +39,12 @@ const Login: React.FC = () => {
         
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              value={credentials.username}
+              type="email"
+              id="email"
+              name="email"
+              value={credentials.email}
               onChange={handleChange}
               required
               disabled={loading}
@@ -77,7 +77,7 @@ const Login: React.FC = () => {
 
         <div className="demo-credentials">
           <p><strong>Demo Credentials:</strong></p>
-          <p>Username: admin</p>
+          <p>Email: admin@example.com</p>
           <p>Password: admin123</p>
         </div>
       </div>
