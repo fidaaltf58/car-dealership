@@ -44,7 +44,7 @@ const Inventory: React.FC = () => {
               <div className="vehicle-image">
                 {vehicle.images[0] ? (
                   <img 
-                    src={`http://localhost:5000/uploads/${vehicle.images[0]}`} 
+                    src={`/uploads/${vehicle.images[0]}`} 
                     alt={`${vehicle.make} ${vehicle.model}`}
                   />
                 ) : (

@@ -15,7 +15,7 @@ const VehicleDetails: React.FC = () => {
 
   const loadVehicle = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/vehicles/${id}`);
+      const response = await axios.get(`/api/vehicles/${id}`);
       setVehicle(response.data);
     } catch (error) {
       console.error('Error loading vehicle:', error);
@@ -36,7 +36,7 @@ const VehicleDetails: React.FC = () => {
             <div className="main-image">
               {vehicle.images && vehicle.images.length > 0 ? (
                 <img 
-                  src={`http://localhost:5000/uploads/${vehicle.images[activeImage]}`} 
+                  src={`/uploads/${vehicle.images[activeImage]}`} 
                   alt={`${vehicle.make} ${vehicle.model}`}
                 />
               ) : (
@@ -48,7 +48,7 @@ const VehicleDetails: React.FC = () => {
                 {vehicle.images.map((image, index) => (
                   <img
                     key={index}
-                    src={`http://localhost:5000/uploads/${image}`}
+                    src={`/uploads/${image}`}
                     alt={`${vehicle.make} ${vehicle.model} ${index + 1}`}
                     className={index === activeImage ? 'active' : ''}
                     onClick={() => setActiveImage(index)}

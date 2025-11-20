@@ -32,9 +32,6 @@ COPY --from=builder /app/dist ./dist
 # Create uploads directory
 RUN mkdir -p uploads
 
-# Create uploads directory
-RUN mkdir -p uploads
-
 EXPOSE 5000
 
 CMD ["npm", "start"]

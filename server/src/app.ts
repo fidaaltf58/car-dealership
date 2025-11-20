@@ -25,6 +25,6 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/car_deale
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
