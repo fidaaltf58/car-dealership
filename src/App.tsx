@@ -8,33 +8,32 @@ import Header from './components/Header';
 import VehicleCard from './components/VehicleCard';
 import FilterSidebar from './components/FilterSidebar';
 
-// 3 VÉHICULES RÉELS - 2 À VENDRE, 1 À LOUER
+// 3 VÉHICULES RÉELS - TOUS À LOUER
 const realVehicles: Vehicle[] = [
   {
-    _id: 'acura-001545',
-    make: 'Acura',
-    model: 'ILX',
-    year: 2021,
-    price: 24350,
-    salePrice: 21900,
+    _id: 'jeep-001545',
+    make: 'Jeep',
+    model: 'Wrangler',
+    year: 2018,
+    price: 450, // Monthly rental
     mileage: 46932,
     color: 'Black',
-    interior: 'Leather',
-    transmission: '8 Speed Automatic',
-    engine: '2.4L 16-Valve D...',
+    interior: 'Cloth',
+    transmission: '6-Speed Manual',
+    engine: '3.6L V6',
     stockNumber: '001545',
-    vin: '19UDEZF76MA001545',
+    vin: '1C4HJXEG8JW123456',
     features: [
-      'Sedan w/Premium Package',
-      'Power Moonroof',
-      'Leather Seats',
-      'Navigation System',
+      '4x4 Off-Road Capability',
+      'Removable Doors',
+      'Removable Top',
+      'Uconnect Infotainment',
       'Backup Camera',
       'Bluetooth',
-      'Heated Seats',
-      'Push Button Start',
-      'Premium Audio',
-      'LED Headlights'
+      'USB Ports',
+      'Power Windows',
+      'Air Conditioning',
+      'All-Terrain Tires'
     ],
     images: [
       '/images/vehicles/2/1.jpeg',
@@ -49,30 +48,31 @@ const realVehicles: Vehicle[] = [
     updatedAt: '2024-01-15'
   },
   {
-    _id: 'honda-002001',
-    make: 'Honda',
-    model: 'CR-V',
-    year: 2022,
-    price: 28900,
-    salePrice: 26900,
+    _id: 'ford-002001',
+    make: 'Ford',
+    model: 'F-150 Raptor',
+    year: 2021,
+    price: 900, // Monthly rental
     mileage: 18500,
-    color: 'Gray',
+    color: 'Black',
     interior: 'Leather',
-    transmission: 'CVT Automatic',
-    engine: '1.5L Turbo 4-Cylinder',
+    transmission: '10-Speed Automatic',
+    engine: '3.5L EcoBoost V6',
     stockNumber: '002001',
-    vin: '5J6RE4H84NL012345',
+    vin: '1FTFW1E58MFA12345',
     features: [
-      'EX-L Trim',
-      'Honda Sensing',
+      'Raptor Performance Package',
+      'Fox Racing Shocks',
+      'Off-Road Mode',
+      'SYNC 4 Infotainment',
+      '360-Degree Camera',
       'Apple CarPlay',
       'Android Auto',
-      'LED Headlights',
-      'Sunroof',
-      'Heated Seats',
-      'Dual Zone Climate',
-      'Power Liftgate',
-      'All-Wheel Drive'
+      'Heated & Ventilated Seats',
+      'Panoramic Sunroof',
+      'B&O Sound System',
+      'Trail Control',
+      'Terrain Management System'
     ],
     images: [
       '/images/vehicles/4/1.jpeg',
@@ -82,36 +82,35 @@ const realVehicles: Vehicle[] = [
       '/images/vehicles/4/5.jpeg',
       '/images/vehicles/4/6.jpeg',
       '/images/vehicles/4/7.jpeg',
-
     ],
     status: 'for-rent',
     createdAt: '2024-01-15',
     updatedAt: '2024-01-15'
   },
   {
-    _id: 'bmw-003002',
-    make: 'BMW',
-    model: 'X3',
-    year: 2023,
-    price: 599, // Prix de location par mois
-    mileage: 8900,
+    _id: 'smart-003002',
+    make: 'Smart',
+    model: 'Fortwo',
+    year: 2016,
+    price: 250, // Monthly rental
+    mileage: 26757,
     color: 'White',
-    interior: 'Premium Leather',
-    transmission: '8-Speed Automatic',
-    engine: '2.0L Turbo I4',
+    interior: 'Fabric',
+    transmission: '5-Speed Automated Manual',
+    engine: '1.0L 3-Cylinder',
     stockNumber: '003002',
-    vin: '5UXTR6C07PUL12345',
+    vin: 'WMEEJ3AA5GK123456',
     features: [
-      'M Sport Package',
-      'Panoramic Sunroof',
-      'Premium Package',
-      'Heated Seats',
-      'Navigation System',
-      'Head-Up Display',
-      'Parking Assistant',
-      'Harmon Kardon Audio',
-      'Wireless Charging',
-      'Apple CarPlay'
+      'Compact City Car',
+      'Fuel Efficient',
+      'Easy Parking',
+      'Radio/CD Player',
+      'Air Conditioning',
+      'Power Windows',
+      'ABS Brakes',
+      'Stability Control',
+      'Airbags',
+      'Remote Keyless Entry'
     ],
     images: [
       '/images/vehicles/SMART/2.jpeg',
@@ -125,7 +124,7 @@ const realVehicles: Vehicle[] = [
       '/images/vehicles/SMART/10.jpeg',
       '/images/vehicles/SMART/11.jpeg',
       '/images/vehicles/SMART/12.jpeg',
-      'public/images/vehicles/SMART/WhatsApp Image 2025-11-19 at 18.48.23.jpeg',
+      '/images/vehicles/SMART/WhatsApp Image 2025-11-19 at 18.48.23.jpeg',
     ],
     status: 'for-rent',
     createdAt: '2024-01-15',
@@ -149,6 +148,16 @@ const ScrollToHash = () => {
   return null;
 };
 
+const ScrollToTop = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return null;
+};
+
 // PAGE D'ACCUEIL
 function HomePage() {
   const [featuredVehicles, setFeaturedVehicles] = useState<Vehicle[]>([]);
@@ -159,19 +168,27 @@ function HomePage() {
 
   return (
     <div className="home-page">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <h1>Find Your Perfect Vehicle</h1>
-          <p>Best deals on quality cars for sale and rent</p>
-          <div className="hero-buttons">
-            <button className="btn-primary" onClick={() => window.location.href = '/inventory'}>
-              Browse Inventory
-            </button>
-            <button className="btn-secondary">
-              Financing Options
-            </button>
-          </div>
+      {/* Video Section */}
+      <section className="video-section">
+        <div className="video-container">
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="promo-video"
+          >
+            <source src="/homevideo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div className="video-buttons">
+          <button className="btn-primary" onClick={() => window.location.href = '/inventory'}>
+            Browse Inventory
+          </button>
+          <button className="btn-secondary">
+            Financing Options
+          </button>
         </div>
       </section>
 
@@ -704,8 +721,10 @@ function AppointmentPage() {
                   onChange={handleChange}
                 >
                   <option value="">Select Vehicle</option>
-                  <option value="acura-ilx">2021 Acura ILX</option>
-                  <option value="honda-crv">2022 Honda CR-V</option>
+                  <option value="Smart">Smart</option>
+                  <option value="Jeep Wrangler">jeep Wrangler </option>
+                  <option value="Ford F-150 Raptor">Ford F-150 Raptor</option>
+
                 </select>
               </div>
 
@@ -732,7 +751,7 @@ function AppointmentPage() {
             <div className="contact-details">
               <div className="contact-item">
                 <strong>Address:</strong>
-                <p>1520 SW 22nd Ave, Miami, Florida.<br />United States 33145</p>
+                <p>8364 NW 74th St, Miami, Florida.<br />United States 33166</p>
               </div>
               <div className="contact-item">
                 <strong>Phone:</strong>
@@ -769,6 +788,11 @@ function VehicleDetailsPage() {
   const vehicleId = window.location.pathname.split('/').pop();
   const vehicle = realVehicles.find(v => v._id === vehicleId);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [vehicleId]);
 
   if (!vehicle) {
     return (
@@ -1006,6 +1030,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <ScrollToTop />
         <ScrollToHash />
         <Header />
         <Routes>

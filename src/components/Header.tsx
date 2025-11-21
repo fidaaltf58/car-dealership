@@ -7,7 +7,7 @@ const Header: React.FC = () => {
       <div className="header-top">
         <div className="container">
           <div className="contact-info">
-            <span>1520 SW 22nd Ave, Miami, Florida, United States 33145.</span>
+            <span>8364 NW 74th St, Miami, Florida, United States 33166.</span>
             <span>+1 (510) 631-3167</span>
           </div>
           <div className="header-links">
@@ -22,7 +22,7 @@ const Header: React.FC = () => {
       <div className="header-main">
         <div className="container">
           <Link to="/" className="logo">
-            <h1>1US MOTORS</h1>
+            <h1>US 1 MOTORS</h1>
           </Link>
           <nav className="main-nav">
             <Link to="/inventory">All Inventory</Link>
