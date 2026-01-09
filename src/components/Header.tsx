@@ -18,7 +18,7 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="header-main">
         <div className="container">
           <Link to="/" className="logo">
@@ -29,7 +29,7 @@ const Header: React.FC = () => {
             <Link to="/inventory/cars">Cars</Link>
             <Link to="/inventory/trucks">Trucks</Link>
             <Link to="/inventory/suvs">SUVs</Link>
-            <Link to="/admin">Admin</Link>
+            <Link to="/login">Login</Link>
           </nav>
         </div>
       </div>

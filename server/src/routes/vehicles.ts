@@ -62,4 +62,54 @@ router.post('/', auth, upload.array('images', 10), async (req, res) => {
   }
 });
 
+// Update vehicle
+router.put('/:id', auth, upload.array('images', 10), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    // Handle features if they are a string
+    if (typeof updates.features === 'string') {
+      updates.features = updates.features.split(',').map((f: string) => f.trim()).filter(Boolean);
+    }
+
+    // Handle new images if uploaded
+    if (req.files && (req.files as Express.Multer.File[]).length > 0) {
+      const newImages = (req.files as Express.Multer.File[]).map((f: Express.Multer.File) => f.filename);
+
+      const vehicle = await Vehicle.findById(id);
+      if (!vehicle) {
+        return res.status(404).json({ message: 'Vehicle not found' });
+      }
+      updates.images = [...vehicle.images, ...newImages];
+    }
+
+    const vehicle = await Vehicle.findByIdAndUpdate(id, updates, { new: true });
+
+    if (!vehicle) {
+      return res.status(404).json({ message: 'Vehicle not found' });
+    }
+
+    res.json(vehicle);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+// Delete vehicle
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const vehicle = await Vehicle.findByIdAndDelete(id);
+
+    if (!vehicle) {
+      return res.status(404).json({ message: 'Vehicle not found' });
+    }
+
+    res.json({ message: 'Vehicle deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
 export default router;

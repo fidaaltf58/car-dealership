@@ -15,7 +15,7 @@ const realVehicles: Vehicle[] = [
     make: 'Jeep',
     model: 'Wrangler',
     year: 2018,
-    price: 450, // Monthly rental
+    price: 28500, // Sale price
     mileage: 46932,
     color: 'Black',
     interior: 'Cloth',
@@ -43,7 +43,7 @@ const realVehicles: Vehicle[] = [
       '/images/vehicles/2/8.jpeg',
       '/images/vehicles/2/WhatsApp Image 2025-11-20 at 12.04.14.jpeg'
     ],
-    status: 'for-rent',
+    status: 'for-sale',
     createdAt: '2024-01-15',
     updatedAt: '2024-01-15'
   },
@@ -52,7 +52,7 @@ const realVehicles: Vehicle[] = [
     make: 'Ford',
     model: 'F-150 Raptor',
     year: 2021,
-    price: 900, // Monthly rental
+    price: 68900, // Sale price
     mileage: 18500,
     color: 'Black',
     interior: 'Leather',
@@ -83,16 +83,56 @@ const realVehicles: Vehicle[] = [
       '/images/vehicles/4/6.jpeg',
       '/images/vehicles/4/7.jpeg',
     ],
-    status: 'for-rent',
+    status: 'for-sale',
     createdAt: '2024-01-15',
     updatedAt: '2024-01-15'
+  },
+  {
+    _id: 'jeep-001546',
+    make: 'Jeep',
+    model: 'Wrangler',
+    year: 2018,
+    price: 27900, // Sale price
+    mileage: 46932,
+    color: 'White',
+    interior: 'Cloth',
+    transmission: '6-Speed Manual',
+    engine: '3.6L V6',
+    stockNumber: '001546',
+    vin: '1C4HJXEG8JW123457',
+    features: [
+      '4x4 Off-Road Capability',
+      'Removable Doors',
+      'Removable Top',
+      'Uconnect Infotainment',
+      'Backup Camera',
+      'Bluetooth',
+      'USB Ports',
+      'Power Windows',
+      'Air Conditioning',
+      'All-Terrain Tires',
+      'Clean title',
+      'Non-smoker vehicle'
+    ],
+    images: [
+      '/images/vehicles/jeepwhite/White jeep 4.jpeg',
+      '/images/vehicles/jeepwhite/White jeep 3.jpeg',
+      '/images/vehicles/jeepwhite/White jeep 2.jpeg',
+      '/images/vehicles/jeepwhite/White jeep 1.jpeg',
+      '/images/vehicles/jeepwhite/White jeep 5.jpeg',
+      '/images/vehicles/jeepwhite/White jeep 6.jpeg'
+
+    ],
+    status: 'for-sale',
+    createdAt: '2024-01-16',
+    updatedAt: '2024-01-16'
   },
   {
     _id: 'smart-003002',
     make: 'Smart',
     model: 'Fortwo',
     year: 2016,
-    price: 250, // Monthly rental
+    price: 8500, // Sale price
     mileage: 26757,
     color: 'White',
     interior: 'Fabric',
@@ -126,10 +166,11 @@ const realVehicles: Vehicle[] = [
       '/images/vehicles/SMART/12.jpeg',
       '/images/vehicles/SMART/WhatsApp Image 2025-11-19 at 18.48.23.jpeg',
     ],
-    status: 'for-rent',
+    status: 'for-sale',
     createdAt: '2024-01-15',
     updatedAt: '2024-01-15'
-  }
+  },
+
 ];
 
 // Composant pour détecter les hash dans l'URL
@@ -171,10 +212,10 @@ function HomePage() {
       {/* Video Section */}
       <section className="video-section">
         <div className="video-container">
-          <video 
-            autoPlay 
-            loop 
-            muted 
+          <video
+            autoPlay
+            loop
+            muted
             playsInline
             className="promo-video"
           >
@@ -202,7 +243,7 @@ function HomePage() {
             ))}
           </div>
           <div className="view-all">
-            <button 
+            <button
               className="btn-outline"
               onClick={() => window.location.href = '/inventory'}
             >
@@ -222,8 +263,8 @@ function HomePage() {
               <p>Quality pre-owned vehicles with comprehensive warranties</p>
             </div>
             <div className="service-card">
-              <h3>Car Rental</h3>
-              <p>Flexible rental options for short and long term</p>
+              <h3>Trade-Ins</h3>
+              <p>We accept all trade-ins at competitive market values</p>
             </div>
             <div className="service-card">
               <h3>Financing</h3>
@@ -252,9 +293,9 @@ function InventoryPage() {
       const matchesSearch = vehicle.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
         vehicle.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
         vehicle.year.toString().includes(searchTerm);
-      
+
       const matchesStatus = statusFilter === 'all' || vehicle.status === statusFilter;
-      
+
       return matchesSearch && matchesStatus;
     })
     .sort((a, b) => {
@@ -266,65 +307,64 @@ function InventoryPage() {
         default: return a.make.localeCompare(b.make);
       }
     });
-    return (
-      <div className="inventory-page">
-        <div className="container">
-          <div className="inventory-header">
-            <h1>Our Vehicle Inventory</h1>
-            <p>Find your perfect vehicle from our selection</p>
-          </div>
-  
-          {/* Search and Filter Bar */}
-          <div className="search-filter-bar">
-            <div className="search-box">
-              <input
-                type="text"
-                placeholder="Search by make, model, or year..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <div className="status-filter">
-              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                <option value="all">All Vehicles</option>
-                <option value="for-sale">For Sale</option>
-                <option value="for-rent">For Rent</option>
-              </select>
-            </div>
-            <div className="sort-filter">
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                <option value="make">Sort: A to Z</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="year-new">Year: Newest First</option>
-                <option value="year-old">Year: Oldest First</option>
-              </select>
-            </div>
-          </div>
-  
-          {/* Inventory Stats */}
-          <div className="inventory-stats">
-            <span>{filteredVehicles.length} vehicles found</span>
-            <span className="real-data-note">✓ Real Inventory Data</span>
-          </div>
-  
-          {/* Vehicles Grid */}
-          <div className="vehicles-grid">
-            {filteredVehicles.map(vehicle => (
-              <VehicleCard key={vehicle._id} vehicle={vehicle} />
-            ))}
-          </div>
-  
-          {filteredVehicles.length === 0 && (
-            <div className="no-vehicles">
-              <h3>No vehicles match your search criteria</h3>
-              <p>Try adjusting your filters or search terms</p>
-            </div>
-          )}
+  return (
+    <div className="inventory-page">
+      <div className="container">
+        <div className="inventory-header">
+          <h1>Our Vehicle Inventory</h1>
+          <p>Find your perfect vehicle from our selection</p>
         </div>
+
+        {/* Search and Filter Bar */}
+        <div className="search-filter-bar">
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Search by make, model, or year..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className="status-filter">
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+              <option value="all">All Vehicles</option>
+              <option value="for-sale">For Sale</option>
+            </select>
+          </div>
+          <div className="sort-filter">
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <option value="make">Sort: A to Z</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="year-new">Year: Newest First</option>
+              <option value="year-old">Year: Oldest First</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Inventory Stats */}
+        <div className="inventory-stats">
+          <span>{filteredVehicles.length} vehicles found</span>
+          <span className="real-data-note">✓ Real Inventory Data</span>
+        </div>
+
+        {/* Vehicles Grid */}
+        <div className="vehicles-grid">
+          {filteredVehicles.map(vehicle => (
+            <VehicleCard key={vehicle._id} vehicle={vehicle} />
+          ))}
+        </div>
+
+        {filteredVehicles.length === 0 && (
+          <div className="no-vehicles">
+            <h3>No vehicles match your search criteria</h3>
+            <p>Try adjusting your filters or search terms</p>
+          </div>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
+}
 
 // PAGE VOITURES
 // PAGE VOITURES
@@ -356,19 +396,19 @@ function CarsPage() {
   }, []);
 
   useEffect(() => {
-    let filtered = vehicles.filter(vehicle => 
+    let filtered = vehicles.filter(vehicle =>
       vehicle.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
       vehicle.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
       vehicle.year.toString().includes(searchTerm)
     );
 
     // Appliquer les filtres
-    filtered = filtered.filter(vehicle => 
-      vehicle.price >= filters.priceRange[0] && 
+    filtered = filtered.filter(vehicle =>
+      vehicle.price >= filters.priceRange[0] &&
       vehicle.price <= filters.priceRange[1] &&
-      vehicle.year >= filters.yearRange[0] && 
+      vehicle.year >= filters.yearRange[0] &&
       vehicle.year <= filters.yearRange[1] &&
-      vehicle.mileage >= filters.mileageRange[0] && 
+      vehicle.mileage >= filters.mileageRange[0] &&
       vehicle.mileage <= filters.mileageRange[1] &&
       (filters.status === 'all' || vehicle.status === filters.status)
     );
@@ -811,13 +851,13 @@ function VehicleDetailsPage() {
   }
 
   const nextImage = () => {
-    setSelectedImageIndex((prev) => 
+    setSelectedImageIndex((prev) =>
       prev === vehicle.images.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevImage = () => {
-    setSelectedImageIndex((prev) => 
+    setSelectedImageIndex((prev) =>
       prev === 0 ? vehicle.images.length - 1 : prev - 1
     );
   };
@@ -836,8 +876,8 @@ function VehicleDetailsPage() {
               <div className="main-image">
                 {vehicle.images && vehicle.images.length > 0 ? (
                   <>
-                    <img 
-                      src={vehicle.images[selectedImageIndex]} 
+                    <img
+                      src={vehicle.images[selectedImageIndex]}
                       alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -861,7 +901,7 @@ function VehicleDetailsPage() {
                   </div>
                 )}
               </div>
-              
+
               {/* Navigation Arrows */}
               {vehicle.images && vehicle.images.length > 1 && (
                 <>
@@ -873,7 +913,7 @@ function VehicleDetailsPage() {
                   </button>
                 </>
               )}
-              
+
               {/* Image Counter */}
               {vehicle.images && vehicle.images.length > 1 && (
                 <div className="image-counter">
@@ -886,13 +926,13 @@ function VehicleDetailsPage() {
             {vehicle.images && vehicle.images.length > 1 && (
               <div className="thumbnail-gallery">
                 {vehicle.images.map((image, index) => (
-                  <div 
+                  <div
                     key={index}
                     className={`thumbnail ${index === selectedImageIndex ? 'active' : ''}`}
                     onClick={() => selectImage(index)}
                   >
-                    <img 
-                      src={image} 
+                    <img
+                      src={image}
                       alt={`${vehicle.year} ${vehicle.make} ${vehicle.model} - View ${index + 1}`}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -917,7 +957,7 @@ function VehicleDetailsPage() {
                 )}
               </div>
             </div>
-            
+
             <div className="stock-vin">
               <span><strong>Stock #:</strong> {vehicle.stockNumber}</span>
               <span><strong>VIN:</strong> {vehicle.vin}</span>
@@ -992,6 +1032,7 @@ function VehicleDetailsPage() {
 }
 
 // PAGE ADMIN
+// PAGE ADMIN
 function AdminDashboard() {
   return (
     <div className="admin-dashboard">
@@ -1010,15 +1051,55 @@ function AdminDashboard() {
 
 // PAGE LOGIN
 function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email === 'admin@example.com' && password === 'admin') {
+      window.location.href = '/admin';
+    } else {
+      alert('Invalid credentials');
+    }
+  };
+
   return (
     <div className="login-page">
       <div className="container">
-        <div className="demo-notice">
-          <h2>Login</h2>
-          <p>Admin login is currently disabled.</p>
-          <button onClick={() => window.location.href = '/'} className="btn-primary">
-            Back to Home
-          </button>
+        <div className="login-container" style={{ maxWidth: '400px', margin: '100px auto', padding: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', borderRadius: '8px', backgroundColor: 'white' }}>
+          <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Admin Login</h2>
+          <form onSubmit={handleLogin}>
+            <div className="form-group" style={{ marginBottom: '1rem' }}>
+              <label htmlFor="email" style={{ display: 'block', marginBottom: '0.5rem' }}>Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={{ width: '100%', padding: '0.75rem', borderRadius: '4px', border: '1px solid #ddd' }}
+              />
+            </div>
+            <div className="form-group" style={{ marginBottom: '2rem' }}>
+              <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem' }}>Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={{ width: '100%', padding: '0.75rem', borderRadius: '4px', border: '1px solid #ddd' }}
+              />
+            </div>
+            <button type="submit" className="btn-primary" style={{ width: '100%', padding: '0.75rem' }}>
+              Login
+            </button>
+          </form>
+          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button onClick={() => window.location.href = '/'} className="btn-text">
+              Back to Home
+            </button>
+          </div>
         </div>
       </div>
     </div>
