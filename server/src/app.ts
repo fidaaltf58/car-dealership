@@ -7,6 +7,13 @@ import authRoutes from "./routes/auth";
 
 dotenv.config();
 
+for (const name of ["JWT_SECRET", "ADMIN_EMAIL", "ADMIN_PASSWORD"]) {
+  if (!process.env[name]) {
+    console.error(`❌ Missing required environment variable: ${name}`);
+    process.exit(1);
+  }
+}
+
 const app = express();
 
 // Convert PORT to number for TypeScript

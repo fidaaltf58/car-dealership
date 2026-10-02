@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
 import { Vehicle } from './types/Vehicle';
 
@@ -7,6 +7,8 @@ import { Vehicle } from './types/Vehicle';
 import Header from './components/Header';
 import VehicleCard from './components/VehicleCard';
 import FilterSidebar from './components/FilterSidebar';
+import AdminDashboard from './pages/AdminDashboard';
+import Login from './pages/Login';
 
 // 3 VÉHICULES RÉELS - TOUS À LOUER
 const realVehicles: Vehicle[] = [
@@ -1031,79 +1033,9 @@ function VehicleDetailsPage() {
   );
 }
 
-// PAGE ADMIN
-// PAGE ADMIN
-function AdminDashboard() {
-  return (
-    <div className="admin-dashboard">
-      <div className="container">
-        <div className="demo-notice">
-          <h2>Admin Dashboard</h2>
-          <p>Admin features are currently disabled. Real vehicle data is displayed on the website.</p>
-          <button onClick={() => window.location.href = '/'} className="btn-primary">
-            View Real Inventory
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// PAGE LOGIN
-function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email === 'admin@example.com' && password === 'admin') {
-      window.location.href = '/admin';
-    } else {
-      alert('Invalid credentials');
-    }
-  };
-
-  return (
-    <div className="login-page">
-      <div className="container">
-        <div className="login-container" style={{ maxWidth: '400px', margin: '100px auto', padding: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', borderRadius: '8px', backgroundColor: 'white' }}>
-          <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Admin Login</h2>
-          <form onSubmit={handleLogin}>
-            <div className="form-group" style={{ marginBottom: '1rem' }}>
-              <label htmlFor="email" style={{ display: 'block', marginBottom: '0.5rem' }}>Email</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '4px', border: '1px solid #ddd' }}
-              />
-            </div>
-            <div className="form-group" style={{ marginBottom: '2rem' }}>
-              <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem' }}>Password</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '4px', border: '1px solid #ddd' }}
-              />
-            </div>
-            <button type="submit" className="btn-primary" style={{ width: '100%', padding: '0.75rem' }}>
-              Login
-            </button>
-          </form>
-          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <button onClick={() => window.location.href = '/'} className="btn-text">
-              Back to Home
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+// PAGE ADMIN (protégée) : redirige vers /login sans token
+function RequireAuth({ children }: { children: React.ReactElement }) {
+  return localStorage.getItem('token') ? children : <Navigate to="/login" replace />;
 }
 
 // COMPOSANT PRINCIPAL APP
@@ -1123,8 +1055,8 @@ function App() {
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/appointment" element={<AppointmentPage />} />
           <Route path="/vehicle/:id" element={<VehicleDetailsPage />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/admin" element={<RequireAuth><AdminDashboard /></RequireAuth>} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>

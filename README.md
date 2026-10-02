@@ -76,13 +76,17 @@ cd server
 npm install
 ```
 
-Create `server/.env`:
+Copy `server/.env.example` to `server/.env` and fill it in:
 
 ```env
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/car_dealership
 JWT_SECRET=replace-with-a-long-random-string
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=replace-with-a-strong-password
 ```
+
+The server refuses to start if `JWT_SECRET`, `ADMIN_EMAIL` or `ADMIN_PASSWORD` is missing.
 
 ```bash
 npm run dev          # ts-node + nodemon on http://localhost:5000
@@ -102,7 +106,7 @@ See [`DOCKER.md`](DOCKER.md), [`FRONTEND_ONLY_DEPLOYMENT.md`](FRONTEND_ONLY_DEPL
 
 | Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| `POST` | `/api/auth/login` | – | Returns a JWT (valid for 7 days) |
+| `POST` | `/api/auth/login` | – | `{ email, password }` → JWT (valid for 7 days). Checked against `ADMIN_EMAIL` / `ADMIN_PASSWORD`. |
 | `GET` | `/api/vehicles` | – | List vehicles |
 | `POST` | `/api/vehicles` | JWT | Create a vehicle (`multipart/form-data`, field `images[]`) |
 | `PUT` | `/api/vehicles/:id` | JWT | Update a vehicle |
@@ -112,9 +116,9 @@ See [`DOCKER.md`](DOCKER.md), [`FRONTEND_ONLY_DEPLOYMENT.md`](FRONTEND_ONLY_DEPL
 
 ## Current status
 
-- The public pages in `src/App.tsx` currently render a **static vehicle catalogue**, so the site works without the backend.
-- The API-backed pages in `src/pages/` (admin CRUD, login) and the Express server are built but **not yet wired into the router**.
-- The demo login uses hard-coded credentials. Replace it with the `/api/auth/login` flow and real user accounts before going to production.
+- The public pages (home, inventory, vehicle details) render a **static vehicle catalogue** from `src/App.tsx`, so the site works without the backend.
+- `/login` and `/admin` use the API-backed pages in `src/pages/`. `/admin` redirects to `/login` when there is no token. Admin features need the backend running; in dev, Vite proxies `/api` to it.
+- The Docker image (`docker-compose.yml` + `nginx.conf`) is **frontend-only**, and `/api` returns 404 there. To use the admin in production, deploy the backend and proxy `/api` to it.
 
 ## Scripts
 
